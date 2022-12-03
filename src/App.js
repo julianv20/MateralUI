@@ -1,25 +1,39 @@
-import logo from './logo.svg';
+import { Container } from '@mui/material';
+import { useEffect, useState } from 'react';
 import './App.css';
+import { Searcher } from './components/Searcher';
+import { UserCard } from './components/userCard';
+import { users } from './services /users';
 
-function App() {
+export const App = () => {
+  const [inputUser, setInputUser] = useState('freddier');
+  const [userState, setUserState] = useState('');
+
+  useEffect(() => {
+    const getUser = async () => {
+      const data = await users(inputUser);
+      setUserState(data);
+      console.log(userState);
+    };
+    getUser();
+  }, [inputUser]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container
+      sx={{
+        background: 'whitesmoke',
+        with: '80vw',
+        // height: '500px',
+        borderRadius: '16px',
+        marginTop: '40px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        paddingBottom: '40px',
+      }}
+    >
+      <Searcher inputUser={inputUser} setInputUser={setInputUser} />
+      <UserCard userState={userState} />
+    </Container>
   );
-}
-
-export default App;
+};
